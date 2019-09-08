@@ -14,9 +14,9 @@ namespace webtest
         void DoneSend();
         void DoneReceived();
 
-        public UInt64 SendLatency { get; }
-        public UInt64 ReceiveLatency { get; }
-        public UInt64 SendReceiveLatency { get; }
+        public ulong SendLatency { get; }
+        public ulong ReceiveLatency { get; }
+        public ulong SendReceiveLatency { get; }
 
     }
 }

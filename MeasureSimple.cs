@@ -7,8 +7,46 @@ using System.Threading.Tasks;
 
 namespace webtest
 {
-    class MeasureSimple : public IMesurement
+    class MeasureSimple : IMesurement
     {
+        protected UInt64 CurrentTime()
+        {
+            return 0;
+        }
+
+        public  void Start()
+        {
+            startMks = CurrentTime();
+        }
+
+        void Sent(UInt32 sent)
+        {
+            UInt64 currentTime = CurrentTime();
+
+            if (!startMks)
+                startMks = currentTime;
+
+            if (!sentFirstMks)
+                sentFirstMks = currentTime;
+
+            sentBytes += sent;
+        }
+
+        void Received(UInt32 received)
+        {
+            UInt64 currentTime = CurrentTime();
+
+            if (!startMks)
+                startMks = currentTime;
+
+            if (!receivedFirstMks)
+                receivedFirstMks = currentTime;
+
+            receivedLastMks = currentTime;
+            receivedBytes += received;
+        }
+
+
 
         public Uint64 SentLatency {
             get {
@@ -34,16 +72,20 @@ namespace webtest
 
         public Uint64 ReceiveCompletionTime 
         {
+            get
+            {
 
+            }
 
         }
 
 
-        private Uint64 startMks;
-        private Uint64 sentFirstMks;
-        private Uint64 receivedFirstMks;
-        private Uint64 receivedLastMks;
-        private Uint64 sentBytes;
-        private Uint64 receivedBytes;
+        private Uint64 startMks = 0;
+        private Uint64 sentFirstMks = 0;
+        private Uint64 sentLastMks = 0;
+        private Uint64 receivedFirstMks = 0;
+        private Uint64 receivedLastMks = 0;
+        private Uint64 sentBytes = 0;
+        private Uint64 receivedBytes = 0;
     }
 }
