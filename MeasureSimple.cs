@@ -4,24 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace webtest
 {
     class MeasureSimple : IMesurement
     {
-        protected UInt64 CurrentTime()
+        protected long CurrentTimeMks()
         {
-            return 0;
+            return Stopwatch.GetTimestamp() * nanosecondsPerTick / 1000;
         }
 
         public  void Start()
         {
-            startMks = CurrentTime();
+            startMks = CurrentTimeMks()
         }
 
         void Sent(UInt32 sent)
         {
-            UInt64 currentTime = CurrentTime();
+            long currentTime = CurrentTimeMks();
 
             if (!startMks)
                 startMks = currentTime;
@@ -34,7 +35,7 @@ namespace webtest
 
         void Received(UInt32 received)
         {
-            UInt64 currentTime = CurrentTime();
+            long currentTime = CurrentTimeMks();
 
             if (!startMks)
                 startMks = currentTime;
@@ -48,14 +49,14 @@ namespace webtest
 
 
 
-        public Uint64 SentLatency {
+        public long SentLatency {
             get {
                 if (startMks && sentFirstMks)
                     return sentFirstMks - startMks;
             }
         }
 
-        public Uint64 ReceiveStartLatency 
+        public long ReceiveStartLatency 
         {
             get {
                 if (!receivedFirst)
@@ -80,12 +81,14 @@ namespace webtest
         }
 
 
-        private Uint64 startMks = 0;
-        private Uint64 sentFirstMks = 0;
-        private Uint64 sentLastMks = 0;
-        private Uint64 receivedFirstMks = 0;
-        private Uint64 receivedLastMks = 0;
-        private Uint64 sentBytes = 0;
-        private Uint64 receivedBytes = 0;
+        
+        private long sentFirstMks = 0;
+        private long sentLastMks = 0;
+        private long receivedFirstMks = 0;
+        private long receivedLastMks = 0;
+        private long sentBytes = 0;
+        private long receivedBytes = 0;
+        
+        private long nanosecondsPerTick = (1000L*1000L*1000L) / Stopwatch.Frequency;
     }
 }
