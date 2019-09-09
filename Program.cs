@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+
 
 namespace webtest
 {
@@ -10,12 +12,29 @@ namespace webtest
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            string sUrl = "http://www.cnn.com";
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+            if (args.Length > 0)
+                sUrl = args[0];
+
+            Console.WriteLine("Proceed with {0}", sUrl);
+
+            IMeasurement measurement = new MeasureSimple();
+            IRunTest test = new SimplePageTest(sUrl);
+            test.StartTest(measurement);
+
+            for (int i = 0; i < 100; i++)
+            {
+                Thread.Sleep(10);
+                if (test.Completed)
+                {
+                    break;
+                }
+            }
+            if (test.Completed)
+            {
+                Console.WriteLine("Test completed. Latency {0} mks Bytes {1}", measurement.ReceiveLatency, measurement.ReceivedBytes);
+            }
         }
     }
 }

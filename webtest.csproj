@@ -43,9 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMeasurement.cs" />
+    <Compile Include="IRunTest.cs" />
     <Compile Include="MeasureSimple.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimplePageTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

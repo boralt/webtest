@@ -14,9 +14,13 @@ namespace webtest
         void DoneSend();
         void DoneReceived();
 
-        public long SendLatency { get; }
-        public long ReceiveLatency { get; }
-        public long SendReceiveLatency { get; }
+        long SendLatency { get; }
+        long ReceiveLatency { get; }
+        long SendReceiveLatency { get; }
+
+        long ReceivedBytes { get; }
+        long SendBytes { get; }
+
 
     }
 }
